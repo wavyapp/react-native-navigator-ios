@@ -45,21 +45,15 @@
 
 - (UIBarButtonItem *)backButtonItem
 {
-  if (!_backButtonItem) {
-    if (_backButtonIcon) {
-      _backButtonItem = [[UIBarButtonItem alloc] initWithImage:_backButtonIcon
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:nil
-                                                        action:nil];
-    } else if (_backButtonTitle.length) {
-      _backButtonItem = [[UIBarButtonItem alloc] initWithTitle:_backButtonTitle
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:nil
-                                                        action:nil];
-    } else {
-      _backButtonItem = nil;
-    }
-  }
+    _backButtonItem =[[UIBarButtonItem alloc]initWithTitle:_backButtonTitle
+                      style:UIBarButtonItemStyleDone
+                      target: nil
+                      action: nil];
+    NSDictionary *textAttribute = @{
+          NSFontAttributeName: [UIFont fontWithName:@"Whitney-Medium" size:16.0],
+    };
+    [_backButtonItem setTitleTextAttributes: textAttribute forState:UIControlStateNormal];
+    [_backButtonItem setTitleTextAttributes: textAttribute forState:UIControlStateHighlighted];
   return _backButtonItem;
 }
 
@@ -103,6 +97,11 @@
       [[UIBarButtonItem alloc] initWithBarButtonSystemItem:_leftButtonSystemIcon
                                                     target:self
                                                     action:@selector(handleLeftButtonPress)];
+      NSDictionary *textAttribute = @{
+            NSFontAttributeName: [UIFont fontWithName:@"Whitney-Medium" size:16.0],
+      };
+      [_leftButtonItem setTitleTextAttributes:textAttribute forState:UIControlStateNormal];
+      [_leftButtonItem setTitleTextAttributes:textAttribute forState:UIControlStateHighlighted];
     } else {
       _leftButtonItem = nil;
     }
@@ -157,6 +156,11 @@
       [[UIBarButtonItem alloc] initWithBarButtonSystemItem:_rightButtonSystemIcon
                                       target:self
                                       action:@selector(handleRightButtonPress)];
+    NSDictionary *textAttribute = @{
+          NSFontAttributeName: [UIFont fontWithName:@"Whitney-Medium" size:16.0],
+    };
+    [_rightButtonItem setTitleTextAttributes:textAttribute forState:UIControlStateNormal];
+    [_rightButtonItem setTitleTextAttributes:textAttribute forState:UIControlStateHighlighted];
     } else {
       _rightButtonItem = nil;
     }
@@ -170,5 +174,37 @@
     _onRightButtonPress(nil);
   }
 }
+
+- (id)propertiesChanged {
+  return nil;
+}
+ + (NSSet *)keyPathsForValuesAffectingPropertiesChanged {
+  // all properties that effects the navigation bar
+  NSString * const properties[] = {
+   @"title",
+   @"titleImage",
+   @"leftButtonIcon",
+   @"leftButtonTitle",
+   @"rightButtonIcon",
+   @"rightButtonTitle",
+   @"backButtonIcon",
+   @"backButtonTitle",
+   @"navigationBarHidden",
+   @"shadowHidden",
+   @"tintColor",
+   @"barTintColor",
+   @"titleTextColor",
+   @"translucent",
+   @"titleImageView",
+   @"backButtonItem",
+   @"leftButtonItem",
+   @"rightButtonItem",
+   @"onLeftButtonPress",
+   @"onRightButtonPress",
+  };
+   NSUInteger numProps = (NSUInteger) (sizeof(properties) / sizeof(NSString*));
+  return [NSSet setWithObjects:properties count:numProps];
+}
+
 
 @end
